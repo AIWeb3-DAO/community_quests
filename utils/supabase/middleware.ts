@@ -1,5 +1,26 @@
 import { createServerClient, type CookieOptions } from "@supabase/ssr";
-import { type NextRequest, NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
+import {createMiddlewareClient} from '@supabase/auth-helpers-nextjs'
+
+
+export async function middleware(req : any) {
+    const  res = NextResponse.next();
+    const supabase = createMiddlewareClient({req, res})
+    const {data : {user}} =   await supabase.auth.getUser()
+
+    if(user && req.nextUrl.pathName === "/"){
+      return NextResponse.redirect(new URL('/dashboard', req.url))
+    }
+    if(! user && req.nextUrl.pathName === "/dashboard"){
+      return NextResponse.redirect(new URL('/', req.url))
+    }
+
+    return res
+}
+
+export const config = {
+  mmatcher : ['/', '/dashboard']
+}
 
 export const updateSession = async (request: NextRequest) => {
   // This `try/catch` block is only here for the interactive tutorial.
