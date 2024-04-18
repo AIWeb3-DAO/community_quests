@@ -6,10 +6,11 @@ type Props = {
      title : string
      description : string
      rewards : string
+     id : any
 }
-export default function FeedCard({cover, title, description, rewards}: Props) {
+export default function FeedCard({cover, title, description, rewards, id}: Props) {
   return (
-    <Link href={`/quests/2`}>
+    <Link href={`/quests/${id}`}>
     <div className='w-[220px  border border-gray-700 p-2 rounded-xl bg-gray-800 hover:bg-gray-700 cursor-pointer '>
          <img
     src={cover}

@@ -6,14 +6,8 @@ import Button from '../common/Button';
 type Props = {
   next : any
   prev : any
-  join : any
-  quest_id : any
-  isJoining : any
-  isSaving : any
-  totalQuests : any 
-  questId : any
 }
-export default function QuestFooter({next, prev, join, quest_id, isJoining, isSaving, totalQuests, questId} : Props) {
+export default function QuestFooter2({next, prev} : Props) {
   return (
     <div className='bg-gray-800 fixed bottom-0 w-full h-20 p-3 border-t border-gray-600'>
    <div className='max-w-6xl  mx-auto h-full flex items-center justify-between'>
@@ -31,9 +25,9 @@ export default function QuestFooter({next, prev, join, quest_id, isJoining, isSa
                              </div>
   </div>
 
-   <div>
-     <Button className='bg-pink-600 text-white font-semibold' onClick={() => join(quest_id, 1, totalQuests)} disabled={isJoining || ! quest_id || isSaving} isLoading={isJoining || isSaving}>Begin</Button>
-    
+   <div className='space-x-5'>
+     <Button className='border border-pink-600 text-white font-semibold' onClick={next}>Next</Button>
+     <Button className='border border-pink-500 text-white font-semibold' onClick={prev}>Prev</Button>
 
    </div>
    </div>

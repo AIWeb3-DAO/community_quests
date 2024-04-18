@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 //import Step from '../tutorial/Step';
 import Step from './Step';
 import Button from '../common/Button';
@@ -16,7 +16,7 @@ export default function Steps() {
   const [isSubmitting, setisSubmitting] = useState(false)
 
   const [currentStep, setCurrentStep] = useState(0)
-    const stepsArray = Array.from({ length: totalSteps }, (_, index) => index + 1);
+    let stepsArray = Array.from({ length: totalSteps }, (_, index) => index + 1);
 
     const [stepsState, setStepsState] = useState(Array.from({ length: totalSteps }, () => ({
       title: "",
@@ -26,6 +26,19 @@ export default function Steps() {
       cover: undefined,
       icon: ""
     })));
+
+    
+    
+  useEffect(() => {
+    setStepsState(Array.from({ length: totalSteps }, () => ({
+      title: "",
+      description: "",
+      isOptional: false,
+      type: "text",
+      cover: undefined,
+      icon: ""
+    })));
+  }, [totalSteps]); // Update stepsState when totalSteps changes
 
 
     const [currentPosition, setcurrentPosition] = useState(0)
@@ -161,7 +174,7 @@ export default function Steps() {
       if(currentPosition === 0) {
         return(
        
-         <QuestType totalSteps={totalSteps} onTotalStepsChange={(e) => handleTotalStepsChange(e) }
+         <QuestType totalSteps={totalSteps} onTotalStepsChange={(e) => settotalSteps(e.target.value) }
            handleNext={handleNext} handlePrev={handlePrev}
            rewards={reward}
            lavel={difculty}
@@ -194,11 +207,11 @@ export default function Steps() {
     index={currentStep}
     onTitleChange={(e) => handleTitleChange(currentStep, e.target.value)}
      title={stepsState[currentStep]?.title}
-     description={stepsState[currentStep].description}
-     isOptional={stepsState[currentStep].isOptional}
-     type={stepsState[currentStep].type}
-     cover={stepsState[currentStep].cover}
-     icon={stepsState[currentStep].icon}
+     description={stepsState[currentStep]?.description}
+     isOptional={stepsState[currentStep]?.isOptional}
+     type={stepsState[currentStep]?.type}
+     cover={stepsState[currentStep]?.cover}
+     icon={stepsState[currentStep]?.icon}
      onDescriptionChange={(e) => handleDescriptionChange(currentStep, e.target.value)}
      onCoverChange={(e) => handleCoverChange(currentStep, e.target.value)}
      onIsOptionalChange={(e) => handleIsOptionalChange(currentStep, e.target.value)}
@@ -221,20 +234,7 @@ export default function Steps() {
         )
       }
      }
-
-
-
-
-
-
-
-
-
-
-
-
-
-   
+ 
 
   return (
    <>

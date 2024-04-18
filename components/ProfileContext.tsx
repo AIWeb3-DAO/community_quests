@@ -27,7 +27,7 @@ import { createClient } from '@/utils/supabase/client'
             data: { session },
           } = await supabase.auth.getSession();
           setloadingInfo(false)
-          setuserInfo(user)
+          setuser(user)
           setuserSession(session)
      }
   useEffect(() => {
@@ -55,6 +55,7 @@ import { createClient } from '@/utils/supabase/client'
      }
     }, [user])
 
+      console.log("the user from context", userInfo)
       const values = {
          userInfo,
          user,
