@@ -1,6 +1,8 @@
 import React from 'react'
 import { BsBox } from "react-icons/bs";
 import Button from '../common/Button';
+import { createClient } from '@/utils/supabase/client';
+import { useProfileContext } from '../ProfileContext';
 
 
 type Props = {
@@ -14,6 +16,28 @@ type Props = {
   questId : any
 }
 export default function QuestFooter({next, prev, join, quest_id, isJoining, isSaving, totalQuests, questId} : Props) {
+  const {user, userInfo} = useProfileContext()
+
+    console.log("the fucck**N user", userInfo)
+  const supabase = createClient()
+
+  const handleLinkX =  async () =>  {
+    const { data, error } = await supabase.auth.linkIdentity({
+      provider: 'twitter',
+    })
+    
+     console.log("the linking data", data)
+     console.log("the linking error", error)
+  }
+
+  const handleLinkD =  async () =>  {
+    const { data, error } = await supabase.auth.linkIdentity({
+      provider: 'discord',
+    })
+    
+     console.log("the linking data", data)
+     console.log("the linking error", error)
+  }
   return (
     <div className='bg-gray-800 fixed bottom-0 w-full h-20 p-3 border-t border-gray-600'>
    <div className='max-w-6xl  mx-auto h-full flex items-center justify-between'>
@@ -31,7 +55,9 @@ export default function QuestFooter({next, prev, join, quest_id, isJoining, isSa
                              </div>
   </div>
 
-   <div>
+   <div className='flex space-x-2'>
+   <Button className='border border-pink-500 text-white font-semibold' onClick={handleLinkX}>Link twitter</Button>
+     <Button className='border border-pink-500 text-white font-semibold' onClick={handleLinkD}>Link discord</Button>
      <Button className='bg-pink-600 text-white font-semibold' onClick={() => join(quest_id, 1, totalQuests)} disabled={isJoining || ! quest_id || isSaving} isLoading={isJoining || isSaving}>Begin</Button>
     
 

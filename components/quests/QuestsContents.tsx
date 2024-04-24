@@ -1,3 +1,5 @@
+
+"use client"
 import React, {useCallback} from 'react'
 import useEmblaCarousel from 'embla-carousel-react'
 import { steps } from '@/utils/constants'
@@ -9,8 +11,12 @@ import QuestFooter2 from './QuestFooter2'
      slides : any
      selectedSlide : any
      closeModal : any
+     unlock : any
+     userLavel : any
+     totalLavels : any
+     isUpdatingProgress : any
   }
-export default function QuestsContents({slides, selectedSlide, closeModal} : Props) {
+export default function QuestsContents({slides, selectedSlide, closeModal,userLavel, totalLavels, isUpdatingProgress, unlock } : Props) {
 
   console.log("the slideds", slides)
     const [emblaRef, emblaApi] = useEmblaCarousel({
@@ -23,13 +29,19 @@ export default function QuestsContents({slides, selectedSlide, closeModal} : Pro
             if (emblaApi) emblaApi.scrollPrev()
           }, [emblaApi])
         //embla__slide
-          const scrollNext = useCallback(() => {
+          const scrollNext  = useCallback(() => {
+            //unlock()
             if (emblaApi) emblaApi.scrollNext()
           }, [emblaApi])
+
+          const handleUnlockStep = async () =>  {
+            unlock()
+            scrollNext()
+          }
  
   return (
-    <div className='flex  w-full   '>
-      <div className='absolute top-[10px] left-3  '>
+    <div className='flex  w-full    '>
+      <div className='absolute top-[10px] left-3   '>
       <IoCloseCircleOutline  className='w-7 h-7 my-2 mx-3 cursor-pointer text-gray-400' onClick={closeModal}  />
 
       </div>
@@ -38,15 +50,20 @@ export default function QuestsContents({slides, selectedSlide, closeModal} : Pro
     <div className="embla__container ">
       {slides.map((slide, i) => (
         <div className={``} key={i}>
-            <ContentCard title={slide.task_title} description={slide.task_description} type={slide.task_type} cover={slide.task_cover} />
+            <ContentCard title={slide.task_title} description={slide.task_description} type={slide.task_type} cover={slide.task_cover}
+              userLavel={userLavel} totalLavel={totalLavels}
+            />
             <p>{slide.quest_title}</p>
+
          </div>
       ))}
     </div>
 
     </div>
 
-<QuestFooter2 next={scrollNext} prev={scrollPrev} verify={false}  />
+    <QuestFooter2 next={handleUnlockStep} prev={scrollPrev} verify={true} lavel={userLavel} totalLavels={totalLavels} isUpdatingProgress={isUpdatingProgress}
+slides={slides}
+/>
 </div>
 
   )

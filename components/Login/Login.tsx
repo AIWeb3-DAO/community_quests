@@ -63,7 +63,7 @@ try {
      
 
 
-     console.log("the otp data", user)
+     console.log("the otp data", otpData)
      console.log("the sesion", session)
      console.log("the user info", userInfo)
        const  handReqOtp = async () =>  {
@@ -145,15 +145,79 @@ try {
 
       // Display  set user  data
 
-       if(user && session  && ! userInfo?.name || ! userInfo?.wallet_address)  {
+       if(user && session  )  {
           return(
             <ProfileDta user_id={user?.id} />
           )
        }
-  return (
-    <div>
+        const getAuthState = () =>  {
+            // Display  set user  data
+
+       if(user && session )  {
+        return(
+          <ProfileDta user_id={user?.id} />
+        )
+     }else if(! user || ! session  ){
+      return(
+        <div className='w-[400px] mx-auto'>
 
         <h1 className='text-3xl font-extrabold'>Create your dako account</h1>
+        <h2 className='text-xl font-bold text-gray-400 my-2'>Join the movement!</h2>
+
+        <div className='my-7'>
+  <Input
+label='email'
+value={email}
+onChange={(e) => setemail(e.target.value)}
+placeholder='your email'
+/>
+
+ <Button className='w-full bg-pink-500 text-white font-semibold my-5'
+ disabled={! email || requestingOtp}
+ isLoading={requestingOtp}
+ onClick={handReqOtp}
+ >Continue with email</Button>
+        </div></div>
+      )
+     }  else if( otpData && ! requestingOtp){
+      <div>
+                 <h2 className='font-extrabold text-3xl my-3'>Check your email</h2>
+                 <h2 className='text-lg font-semibold text-gray-400'>We've sent a code to {email}.  Please <br /> enter the code immediately, as it will soon expire.</h2>
+                 <div className="mt-6">
+      <InputOTP
+        maxLength={6}
+        value={value}
+        onChange={(value) => setValue(value)}
+        className=''
+      >
+        <InputOTPGroup>
+          <InputOTPSlot index={0} />
+          <InputOTPSlot index={1} />
+          <InputOTPSlot index={2} />
+          <InputOTPSlot index={3} />
+          <InputOTPSlot index={4} />
+          <InputOTPSlot index={5} />
+        </InputOTPGroup>
+      </InputOTP>
+      <div className="text-center text-sm">
+        
+         <div> 
+           <Button className='w-full bg-pink-500 text-white font-semibold my-5'
+ disabled={! otpData || requestingOtp || otpError }
+ isLoading={verfyngOtp}
+ onClick={handleVerifyOtp}
+ >Verify Otp</Button>
+           </div>
+      
+      </div>
+    </div>
+             </div>
+     }
+        }
+  return (
+    <div className=''>
+
+<h1 className='text-3xl font-extrabold'>Create your dako account</h1>
         <h2 className='text-xl font-bold text-gray-400 my-2'>Join the movement!</h2>
 
         <div className='my-7'>
@@ -173,7 +237,4 @@ placeholder='your email'
     </div>
   )
 }
-
-
-
 

@@ -2,6 +2,7 @@ import { GeistSans } from "geist/font/sans";
 import "./globals.css";
 import Index from "@/components/Topnavbar/Index";
 import { ProfileContextProvider } from "@/components/ProfileContext";
+import { SlideProvider } from "@/components/QuestStepsContext";
 const defaultUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`
   : "http://localhost:3000";
@@ -22,8 +23,10 @@ export default function RootLayout({
       <body className="bg-gray-900 text-gray-300">
         <main className="min-h-screen ">
           <ProfileContextProvider>
+        
           <Index   />
           {children}
+         
           </ProfileContextProvider>
         </main>
       </body>

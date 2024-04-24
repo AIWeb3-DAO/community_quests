@@ -14,25 +14,51 @@ import { createClient } from '@/utils/supabase/client'
     const [userSession, setuserSession] = useState()
     const [user, setuser] = useState()
     const [userInfo, setuserInfo] = useState()
-    const [loadingInfo, setloadingInfo] = useState(false)
+    const [isFetchingUser, setisFetchingUser] = useState(false)
     const [userInfoError, setuserInfoError] = useState()
+    const [userIdentities, setuserIdentities] = useState()
+    const [isFetchingIdentities, setisFetchingIdentities] = useState(false)
    const supabase = createClient()
 
-     const handFetchUserInfo = async  () => {
-        setloadingInfo(true)
+     const handleFetchUser = async  () => {
+        setisFetchingUser(true)
         const {
             data: { user },
           } = await supabase.auth.getUser();
           const {
             data: { session },
           } = await supabase.auth.getSession();
-          setloadingInfo(false)
+          setisFetchingUser(false)
           setuser(user)
           setuserSession(session)
      }
   useEffect(() => {
-      handFetchUserInfo()
+      handleFetchUser()
   }, [])
+
+   const handleFetchIdenties = async () =>  {
+      try {
+         setisFetchingIdentities(true)
+         const {
+            data, error
+          } = await supabase.auth.getUserIdentities()
+          setuserIdentities(data)
+     setisFetchingIdentities(false)
+         
+      } catch (error) {
+         setisFetchingIdentities(false)
+        console.log("the error fetching user data", error) 
+      }
+     
+        
+   }
+
+    useEffect(() => {
+      if(user) {
+       handleFetchIdenties()
+      }
+    }, [user])
+    
 
   const handleGetUserInfo = async () => {
     try {
@@ -60,8 +86,9 @@ import { createClient } from '@/utils/supabase/client'
          userInfo,
          user,
          userSession,
-         loadingInfo,
-         userInfoError
+         isFetchingUser,
+         userInfoError,
+         userIdentities
       }
 
       return (

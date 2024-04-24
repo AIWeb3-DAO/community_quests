@@ -8,10 +8,14 @@ type Props = {
    cover ? : any
    type ? : any
    completed ? : any
+   userLavel ? : any
+   totalLavel ?  : any
 }
-export default function ContentCard({description, type, cover, title} : Props) {
+export default function ContentCard({description, type, cover, title, userLavel, totalLavel} : Props) {
   return (
     <div className={`w-full bg-gray-800 h-[65vh] my-5 rounded-xl p-4 flex items-center justify-center`}>
+        <h1>Your lavel : {userLavel}</h1>
+        <h1>total lavel : {totalLavel}</h1>
       <h1 className={`${type === "text" ?  "text-5xl text-center font-semibold leading-snug" : 'hidden' }`}>{description}</h1>
        {type === "verify"  ?  (
           <div className='flex flex-col items-center justify-center'> 

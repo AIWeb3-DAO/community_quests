@@ -14,6 +14,7 @@ import { useProfileContext } from '../ProfileContext';
 import { usePathname, useRouter } from 'next/navigation';
 import { IoBarChartOutline } from "react-icons/io5";
 import { CiShoppingTag } from "react-icons/ci";
+import { SlideProvider, useSlideContext } from '../QuestStepsContext';
 
 export default function QuestPage() {
    const [showMod, setshowMod] = useState(false)
@@ -33,9 +34,13 @@ export default function QuestPage() {
      const [isClaimingRewardsError, setisClaimingRewardsError] = useState(false)
      const [climingError, setclimingError] = useState()
      const [isTaskCompleted, setisTaskCompleted] = useState(false)
+     const [stepsUpdated, setstepsUpdated] = useState(false)
+     const [isUpdatingProgress, setisUpdatingProgress] = useState(false)
+     const [nowLavel, setnowLavel] = useState(0)
    const {userInfo, user} = useProfileContext()
+   const {handleToggleExpand, isShowModal, selectedSlideIndex} = useSlideContext()
    const currentUser = user?.id
-       console.log("whaaaf", currentUser)
+       console.log("whaaaf", user)
    const router = usePathname()
 
    //const fullPath = '/quests/2deee952-3410-4071-9659-6cf1036d672e';
@@ -74,12 +79,14 @@ export default function QuestPage() {
 
         // get_all_ participants
 
-        const handleFetchParticipants = async () =>  {
+        const handleFetchParticipants = async (questId: any) =>  {
    try {
     
 const { data, error } = await supabase
 .from('participants')
 .select()
+.eq("quest_id", questId)
+ 
 setquestParticipants(data)
 if(error) {
   console.log("something went wrong fetching participants", error)
@@ -130,6 +137,7 @@ if(error) {
            quest_uid : theQuestId
         
         })
+        setstepsUpdated(true)
      if(error) {
       console.log("the actual error", error)
      }
@@ -140,6 +148,47 @@ if(error) {
       }
 
      }
+
+      //  UPDATE THE PROGRESS  
+
+
+       const updateProgress = async () => {
+        if (userLavel ) {
+          setisUpdatingProgress(true);
+          let newStep = userLavel[0]?.step + 1;
+          //setnowLavel(userLavel[0]?.step + 1)
+          console.log("the next step", newStep);
+          console.log("the user level", userLavel[0]?.step);
+       
+          
+          const { data, error } = await supabase
+           .from('quest_progress')
+            .update({ step: newStep })
+            .eq('user_id', currentUser)
+            .eq('quest_uid', pathId)
+            .select()
+
+            
+            
+          setisUpdatingProgress(false);
+          if(data){
+            handleFetchUserLavel(currentUser, pathId)
+          }
+         
+          
+          if (error) {
+            setisUpdatingProgress(false)
+            console.log("something went wrong when updating progress", error);
+          }
+        } else {
+          console.log("userLavel is null or empty");
+        }
+      };
+
+
+
+
+
         // JOIN THE QUEST
 
          console.log("is the user joined", hasJoined)
@@ -165,11 +214,26 @@ if(error) {
      }
 
 
+     // EXAPAND 
+
+     const toggelExpand = (i : any) => {
+      setshowMod(! showMod)
+      setselectedSlide(i)
+    }
+
        // HANDLE JOIN 
 
        const handleJoinQuest = async (quest_id_p, step, total_steps, quest_id) =>  {
+        setisJoining(true)
           await joinQuest(quest_id_p)
           await progressTracker(step, total_steps)
+         //toggelExpand(step)
+
+          handleToggleExpand(step)
+
+         
+          setisJoining(false)
+      
 
        }
     
@@ -220,27 +284,31 @@ const { error } = await supabase
             // FETCH_QUEST_CONTENTS
             handleFtechQuestById(pathId)
            //  FETCH_ALL PARTICIPANTS 
-           handleFetchParticipants()
+           handleFetchParticipants(pathId)
+         //  handleFetchUserLavel(currentUser,  pathId)
   
             // FETCH_USER_DATA
-          //  handleFetchUserLavel(currentUser, questId)
+           handleFetchUserLavel(currentUser, questId)
             
 
-         }, [pathId])
+         }, [pathId, hasJoined])
 
         useEffect(() => {
            
 
             // CHECK_USER_STATUS
             handleCheckuserStatus()
-         }, [questParticipants])
+         }, [questParticipants, hasJoined])
 
-         useEffect(() => {
+        useEffect(() => {
           
-          handleFetchUserLavel(currentUser, questId)
+          handleFetchUserLavel(currentUser,  pathId)
          
            
-         }, [currentUser, questId])
+         }, [currentUser, pathId,  hasJoined, isUpdatingProgress])
+
+         
+          
          
 
          console.log("all participants", questParticipants)
@@ -264,13 +332,12 @@ const { error } = await supabase
          if (emblaApi) emblaApi.scrollNext()
        }, [emblaApi])
 
-    const toggelExpand = (i : any) => {
-      setshowMod(! showMod)
-      setselectedSlide(i)
-    }
+   
 
     
+    
   return (
+   
     <div className='w-full min-h-screen'>
     <div className='flex items-center justify-center  h-full '>
          <div className='flex flex-col items-center justify-center mt-3 '>
@@ -316,9 +383,9 @@ className='w-[200px] object-cover rounded-lg'
     <div className=' max-w-6xl w-full  mx-auto'>
                  <h1 className='text-xl text-start font-semibold capitalize'>steps {questContents && questContents[0]?.total_tasks}</h1>
 
-                 <div className=' mb-24'>
+                 <div className=' mb-24 '>
                  { questContents && questContents[0]?.quest_tasks?.map((step, i) =>  (
-                   <div className=' bg-gray-800 hover:bg-gray-700 my-3 p-3 rounded-xl h-20 flex items-center justify-between cursor-pointer ' onClick={() => toggelExpand(i)}>
+                   <div className=' bg-gray-800 hover:bg-gray-700 my-3 p-3 rounded-xl h-20 flex items-center justify-between cursor-pointer ' onClick={() => handleToggleExpand(i)}>
                      <div className='flex items-center space-x-2'>
                     <p>{step?.task_icon}</p>
                     <p className='text-lg font-semibold'>{step?.task_title}</p>
@@ -342,12 +409,15 @@ className='w-[200px] object-cover rounded-lg'
                </div>  
 
                  {
-                  showMod &&  (
+                  isShowModal &&  (
                       <div className='fixed w-full h-screen bg-gray-900 top-[60px] left-0  '> 
                      
-                        <div className='w-full h-[70vh]  flex items-center justify-center  '> 
-                          <QuestsContents slides={questContents && questContents[0]?.quest_tasks} selectedSlide={selectedSlide} closeModal={toggelExpand} 
-                           unlock={progressTracker}
+                        <div className='w-full h-[78vh]  flex items-center justify-center  '> 
+                          <QuestsContents slides={questContents && questContents[0]?.quest_tasks} selectedSlide={selectedSlide} closeModal={handleToggleExpand} 
+                           unlock={updateProgress}
+                           userLavel={userLavel?.[0]?.step}
+                           totalLavels={userLavel?.[0]?.total_steps}
+                           isUpdatingProgress={isUpdatingProgress}
                           />
                            
                             </div>
@@ -367,5 +437,6 @@ className='w-[200px] object-cover rounded-lg'
 
          
     </div>
+   
   )
 }
