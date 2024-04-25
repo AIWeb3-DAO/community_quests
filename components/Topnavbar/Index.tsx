@@ -28,7 +28,7 @@ export default function Index() {
           </Link>
             
         </div>
-         <div className='flex'>
+         <div className=' hidden md:flex'>
             {/*} <Link href={`/login`} className='bg-pink-500 text-white py-2 px-4 rounded-xl font-semibold'>connect to dako</Link>*/}
               <ProfileCard  />
               <Button onClick={() => setisShow(! isShow)}>Toggo auth</Button>

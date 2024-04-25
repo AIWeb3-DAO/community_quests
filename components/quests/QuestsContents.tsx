@@ -1,12 +1,14 @@
 
 "use client"
-import React, {useCallback} from 'react'
+import React, {useCallback, useState, useEffect} from 'react'
 import useEmblaCarousel from 'embla-carousel-react'
 import { steps } from '@/utils/constants'
 import ContentCard from './ContentCard'
 import QuestFooter from './QuestFooter'
 import { IoCloseCircleOutline } from 'react-icons/io5'
 import QuestFooter2 from './QuestFooter2'
+import { useSlideContext } from '../QuestStepsContext'
+import Button from '../common/Button'
   type Props = {
      slides : any
      selectedSlide : any
@@ -17,21 +19,35 @@ import QuestFooter2 from './QuestFooter2'
      isUpdatingProgress : any
   }
 export default function QuestsContents({slides, selectedSlide, closeModal,userLavel, totalLavels, isUpdatingProgress, unlock } : Props) {
-
+ const {setSelectedSlideIndex, isVerifyState, toggleIsVerifyStep} = useSlideContext()
+ const [verificationUrl, setverificationUrl] = useState("")
   console.log("the slideds", slides)
     const [emblaRef, emblaApi] = useEmblaCarousel({
         axis: "y",
     skipSnaps: true,
-    loop: false
+    loop: false,
+    dragFree : false,
+    
         })
 
+       
+
         const scrollPrev = useCallback(() => {
-            if (emblaApi) emblaApi.scrollPrev()
+            if (emblaApi)  {
+              emblaApi.scrollPrev()
+              //console.log("the current slide in view", emblaApi?.selectedScrollSnap())
+                setSelectedSlideIndex(emblaApi?.selectedScrollSnap())
+            } 
           }, [emblaApi])
         //embla__slide
           const scrollNext  = useCallback(() => {
             //unlock()
-            if (emblaApi) emblaApi.scrollNext()
+            if (emblaApi) {
+               emblaApi.scrollNext()
+              // console.log("the current slide in view", emblaApi?.slidesInView())
+               setSelectedSlideIndex(emblaApi?.selectedScrollSnap())
+
+            }
           }, [emblaApi])
 
           const handleUnlockStep = async () =>  {
@@ -39,14 +55,45 @@ export default function QuestsContents({slides, selectedSlide, closeModal,userLa
             scrollNext()
           }
  
+
+          if(isVerifyState){
+            return(
+              <div className='flex  w-full h-full md:h-[80vh]   '>
+              <div className='absolute top-[80px] md:top-[10px] left-3   '>
+              <IoCloseCircleOutline  className='w-7 h-7 my-2 mx-3 cursor-pointer text-gray-400' onClick={toggleIsVerifyStep}  />
+              </div>
+              <div className=' w-11/12 mt-20 md:w-4/6  mx-auto p-4 rounded-xl'>
+                 <h1 className='font-medium my-2 text-center text-2xl'>Verify</h1>
+                  <div className=' w-full border border-gray-600 h-[50%]'>
+                    description video 
+                  </div>
+              
+
+               <div className='my-4 w-full'>
+                  <p className='mb-3 text-gray-400'>Paste Link</p>
+                  <input  value={verificationUrl} onChange={(e) => setverificationUrl(e.target.value)} 
+                    placeholder='link'
+                    className='w-full focus:outline-none bg-inherit border border-gray-600 py-2 px-4 rounded-xl'
+                  />
+                  <div className='flex justify-center'>
+
+                   <Button className='bg-blue-600 my-4 w-4/6 mx-auto rounded-xl'>Verify Action</Button>
+                   </div>
+               </div>
+        
+               </div>
+              </div>
+              
+            )
+          }
   return (
     <div className='flex  w-full    '>
-      <div className='absolute top-[10px] left-3   '>
+      <div className='absolute top-[70px] md:top-[10px] left-3  z-20  '>
       <IoCloseCircleOutline  className='w-7 h-7 my-2 mx-3 cursor-pointer text-gray-400' onClick={closeModal}  />
 
       </div>
     
-    <div className={`embla w-4/6  `} ref={emblaRef}>
+    <div className={`embla w-11/12 md:w-4/6  `} ref={emblaRef}>
     <div className="embla__container ">
       {slides.map((slide, i) => (
         <div className={``} key={i}>

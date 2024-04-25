@@ -1,6 +1,6 @@
 import React from 'react'
 import Button from '../common/Button'
-
+import { useSlideContext } from '../QuestStepsContext'
 
 type Props = {
    title : string
@@ -12,6 +12,13 @@ type Props = {
    totalLavel ?  : any
 }
 export default function ContentCard({description, type, cover, title, userLavel, totalLavel} : Props) {
+  const {isLoading, verifyStep, verificationType, isVerifyState} = useSlideContext()
+
+    if(isVerifyState){
+      return(
+         <div>I'm in verfify mode</div>
+      )
+    }
   return (
     <div className={`w-full bg-gray-800 h-[65vh] my-5 rounded-xl p-4 flex items-center justify-center`}>
         <h1>Your lavel : {userLavel}</h1>
