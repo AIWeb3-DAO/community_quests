@@ -65,16 +65,16 @@ export default function SignIn() {
           }
       }, [user, currentStep, otpData])
       
-
+// HOME_STATE
       const getCurrentStep = () =>  {
           if(currentStep  === "HOME_STATE"){
             return(
        <>
          <div className=''>
-             <h1 className='text-center text-3xl font-medium text-zinc-50'>Welcome to Magic Store
-The Web3 App Store</h1>
+             <h1 className='text-center text-2xl font-medium text-zinc-50'>Welcome to Dot Quests
+The Polkadot Marketing Hub</h1>
 
-<p className='font-thin text-center text-sm my-4'>Sign up or log in to discover community-vetted apps and games, earn rewards, and be part of a community actively shaping the Web3 future!</p>
+<p className='font-thin text-center text-sm my-4'>Sign up or log in to discover community-vetted  compagns  and games, earn rewards, and be part of a community actively shaping the Web3 future!</p>
          </div>
 
           <div>

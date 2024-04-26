@@ -412,7 +412,7 @@ className='w-[200px] object-cover rounded-lg'
                  <h1 className='text-xl text-start font-semibold capitalize pl-2'>steps {questContents && questContents[0]?.total_tasks}</h1>
 
                  { questContents && questContents[0]?.quest_tasks?.map((step, i ) =>  (
-                   <div className={` bg-gray-800  my-3 py-2 md:p-3 rounded-xl h-16 px-3 md:h-20 flex items-center justify-between ${userLavel && userLavel[0]?.step >= i  ? "cursor-pointer hover:bg-gray-700" : "cursor-default hover:bg-gray-800/35"} `} onClick={() => {
+                   <div className={` bg-gray-800  my-3 py-2 md:p-3 rounded-xl h-16 px-3 md:h-20 flex items-center justify-between ${userLavel && userLavel[0]?.step >= i  ? "cursor-pointer hover:bg-gray-700" : "cursor-default hover:bg-gray-700"} `} onClick={() => {
                     if(userLavel && userLavel[0]?.step >= i)
                     handleToggleExpand(i)}} 
                     key={i}>
