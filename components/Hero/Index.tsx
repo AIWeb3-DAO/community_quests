@@ -46,7 +46,7 @@ plugins={[
       <CarouselContent> 
           {upcomings.map((item,i) =>  (
             <CarouselItem key={i}>
-                <div className='w-full h-[70vh] md:h-[80vh]    rounded-xl p-5 relative'>
+                <div className='w-full h-[70vh] md:h-[65vh]    rounded-xl p-5 relative'>
                      <div className='absolute top-2 h-full w-full flex  items-center justify-center flex-col-reverse md:flex-row  left-0 p-1  rounded-xl '>
                       <div className=' flex-1   h-[270px] md:h-full w-full md:w-6/12'>
                       <div className="w-full h-full flex flex-col  justify-center  p-2 ">

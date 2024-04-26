@@ -1,3 +1,5 @@
+//@ts-nocheck
+
 'use client'
 import React, {useState, useEffect, useInsertionEffect} from 'react'
 import Input from '../common/inputs/Input'

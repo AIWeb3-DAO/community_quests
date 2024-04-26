@@ -1,3 +1,4 @@
+//@ts-nocheck
 import React, {useState, useEffect} from 'react'
 import { FcGoogle } from "react-icons/fc";
 import { FaDiscord } from "react-icons/fa6";

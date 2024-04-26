@@ -101,3 +101,8 @@ export const  steps = [
 
 export const testArray = [1,2,3,4,5]
 export const testArray2 = [1,2,3,4,5,1,2,3,4,5,2,3]
+
+export const APP_DESCRIPTION = "APP_DESCRIPTION"
+export const APP_NAME = "APP_NAME"
+export const WEBSITE_URL = "web_url"
+export const ZENVID_X_HANDLE ="twitter handle"

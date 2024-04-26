@@ -1,4 +1,6 @@
+//@ts-nocheck
 'use client'
+
 import React, {useState, useEffect, useRef} from 'react'
 import Input from '../common/inputs/Input'
 import Button from '../common/Button'

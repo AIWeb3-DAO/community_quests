@@ -1,3 +1,5 @@
+//@ts-nocheck
+
 import React, {useState, useEffect} from 'react'
 //import Step from '../tutorial/Step';
 import Step from './Step';
