@@ -9,6 +9,7 @@ import { IoCloseCircleOutline } from 'react-icons/io5'
 import QuestFooter2 from './QuestFooter2'
 import { useSlideContext } from '../QuestStepsContext'
 import Button from '../common/Button'
+import { Verified } from 'lucide-react'
   type Props = {
      slides : any
      selectedSlide : any
@@ -19,19 +20,21 @@ import Button from '../common/Button'
      isUpdatingProgress : any
   }
 export default function QuestsContents({slides, selectedSlide, closeModal,userLavel, totalLavels, isUpdatingProgress, unlock } : Props) {
- const {setSelectedSlideIndex, isVerifyState, toggleIsVerifyStep} = useSlideContext()
+ const {setSelectedSlideIndex, isVerifyState, toggleIsVerifyStep, verifyStep, setIsVerifyState, isLoading, isVerified, setIsVerified, selectedSlideIndex, verifiedIndex, setVerifiedIndex} = useSlideContext()
  const [verificationUrl, setverificationUrl] = useState("")
   console.log("the slideds", slides)
     const [emblaRef, emblaApi] = useEmblaCarousel({
         axis: "y",
     skipSnaps: true,
     loop: false,
-    dragFree : false,
+    watchDrag : false,
+  
     
         })
 
        
-
+  let  twitterTest = "https://twitter.com/SubsocialChain"
+  let discordTest = "https://discord.com/channels/@me/1225343728789622805/1233291494266503248"
         const scrollPrev = useCallback(() => {
             if (emblaApi)  {
               emblaApi.scrollPrev()
@@ -51,11 +54,13 @@ export default function QuestsContents({slides, selectedSlide, closeModal,userLa
           }, [emblaApi])
 
           const handleUnlockStep = async () =>  {
-            unlock()
+           // unlock()
             scrollNext()
+           
+           
           }
  
-
+         
           if(isVerifyState){
             return(
               <div className='flex  w-full h-full md:h-[80vh]   '>
@@ -76,8 +81,8 @@ export default function QuestsContents({slides, selectedSlide, closeModal,userLa
                     className='w-full focus:outline-none bg-inherit border border-gray-600 py-2 px-4 rounded-xl'
                   />
                   <div className='flex justify-center'>
-
-                   <Button className='bg-blue-600 my-4 w-4/6 mx-auto rounded-xl'>Verify Action</Button>
+    <p>{isVerified ? "VERIFIED" : "NOT VERIFIED"}</p>
+                   <Button className='bg-blue-600 my-4 w-4/6 mx-auto rounded-xl' onClick={() =>    verifyStep("DISCORD", discordTest, selectedSlideIndex)} isLoading={isLoading}>Verify Action</Button>
                    </div>
                </div>
         
@@ -98,7 +103,7 @@ export default function QuestsContents({slides, selectedSlide, closeModal,userLa
       {slides.map((slide, i) => (
         <div className={``} key={i}>
             <ContentCard title={slide.task_title} description={slide.task_description} type={slide.task_type} cover={slide.task_cover}
-              userLavel={userLavel} totalLavel={totalLavels}
+              userLavel={userLavel} totalLavel={totalLavels} taskOptional ={slide?.task_isOptional}
             />
             <p>{slide.quest_title}</p>
 

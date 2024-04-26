@@ -11,7 +11,7 @@ type Props = {
 export default function FeedCard({cover, title, description, rewards, id}: Props) {
   return (
     <Link href={`/quests/${id}`}>
-    <div className='w-[220px  border border-gray-700 p-2 rounded-xl bg-gray-800 hover:bg-gray-700 cursor-pointer '>
+    <div className=' aspect-[16/9]   border border-gray-700 p-2 rounded-xl bg-gray-800 hover:bg-gray-700 cursor-pointer '>
          <img
     src={cover}
     width={300}

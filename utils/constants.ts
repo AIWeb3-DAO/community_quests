@@ -98,3 +98,6 @@ export const  steps = [
 
   },
 ]
+
+export const testArray = [1,2,3,4,5]
+export const testArray2 = [1,2,3,4,5,1,2,3,4,5,2,3]

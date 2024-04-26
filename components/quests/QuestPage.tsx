@@ -15,6 +15,7 @@ import { usePathname, useRouter } from 'next/navigation';
 import { IoBarChartOutline } from "react-icons/io5";
 import { CiShoppingTag } from "react-icons/ci";
 import { SlideProvider, useSlideContext } from '../QuestStepsContext';
+import QuestPageSkeleton from '../Skeletons/QuestPageSkeleton';
 
 export default function QuestPage() {
    const [showMod, setshowMod] = useState(false)
@@ -37,6 +38,10 @@ export default function QuestPage() {
      const [stepsUpdated, setstepsUpdated] = useState(false)
      const [isUpdatingProgress, setisUpdatingProgress] = useState(false)
      const [nowLavel, setnowLavel] = useState(0)
+     const [isFtchingParticipants, setisFtchingParticipants] = useState(false)
+     const [isFetchingParticipantsError, setisFetchingParticipantsError] = useState(false)
+     const [isFetchingUserUserLavel, setisFetchingUserUserLavel] = useState(false)
+     const [truth, settruth] = useState(true)
    const {userInfo, user} = useProfileContext()
    const {handleToggleExpand, isShowModal, selectedSlideIndex} = useSlideContext()
    const currentUser = user?.id
@@ -57,6 +62,7 @@ export default function QuestPage() {
 
       const handleFetchUserLavel =  async (userId: any, qestId : any)  => {
        try {
+        setisFetchingUserUserLavel(true)
         const { data, error } = await supabase
         .from('quest_progress')
         .select()
@@ -64,8 +70,9 @@ export default function QuestPage() {
         .eq('quest_uid', qestId)
 
         setuserLavel(data)
-
+  setisFetchingUserUserLavel(false)
          if(error) {
+          setisFetchingUserUserLavel(false)
    setisFetchingUserLavelError(true)
        setfetchingLavelError(error)
        console.log("the error when fetchiing", fetchingLavelError)
@@ -81,6 +88,7 @@ export default function QuestPage() {
 
         const handleFetchParticipants = async (questId: any) =>  {
    try {
+    setisFtchingParticipants(truth)
     
 const { data, error } = await supabase
 .from('participants')
@@ -88,7 +96,10 @@ const { data, error } = await supabase
 .eq("quest_id", questId)
  
 setquestParticipants(data)
+setisFtchingParticipants(false)
 if(error) {
+  setisFtchingParticipants(false)
+  setisFetchingParticipantsError(true)
   console.log("something went wrong fetching participants", error)
 }
    } catch (error) {
@@ -248,6 +259,7 @@ if(error) {
           .select()
           .eq('id', id) 
   setquestContents(data)
+  setisFetchingQuestContents(false)
            if(error)  {
             setisFecthingQuestContentsError(true)
           setfetchingQuestError(error)
@@ -340,7 +352,13 @@ const { error } = await supabase
        }, [emblaApi])
 
    
-
+if(isFetchingQuestContents || isFtchingParticipants || isFetchingUserUserLavel){
+  return(
+    <div className='w-full  flex flex-col items-center justify-center'>
+      <QuestPageSkeleton  />
+    </div>
+  )
+}
     
     
   return (
@@ -362,22 +380,22 @@ className='w-[200px] object-cover rounded-lg'
 
              <div className='flex gap-8 my-5 items-center justify-center'>
                  <div className='flex items-center gap-3 border-r border-gray-800'>
-                     <div className='w-16 h-16 bg-gray-800 rounded-2xl flex items-center justify-center'>
+                     <div className='w-16 h-16 bg-zinc-900 rounded-2xl flex items-center justify-center'>
                      <IoBarChartOutline  className='text-pink-500 w-6 h-6' />
                      </div>
           <div className=' pr-6'>
-            <h1 className=''>Lavel</h1>
-             <p className='text-sm text-gray-400'>{ questContents && questContents[0].lavel}</p>
+            <h1 className='text-gray-500 md:font-semibold'>Lavel</h1>
+             <p className='text-xs '>{ questContents && questContents[0].lavel}</p>
           </div>
                  </div>
 
                  <div className='flex items-center gap-3'>
-                     <div className='w-16 h-16 bg-gray-800 rounded-2xl flex items-center justify-center'>
+                     <div className='w-16 h-16 bg-zinc-900 rounded-2xl flex items-center justify-center'>
                      <CiShoppingTag className='text-pink-500 w-7 h-7' />
                      </div>
           <div className=' pr-6'>
-            <h1 className=''>Chain</h1>
-             <p className='text-sm text-gray-400'>{ questContents && questContents[0]?.quest_category}</p>
+            <h1 className='text-gray-500 md:font-semibold'>Chain</h1>
+             <p className='text-xs '>{ questContents && questContents[0]?.quest_category}</p>
           </div>
                  </div>
              </div>

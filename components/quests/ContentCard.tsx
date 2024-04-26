@@ -10,21 +10,19 @@ type Props = {
    completed ? : any
    userLavel ? : any
    totalLavel ?  : any
+   taskOptional : any
 }
-export default function ContentCard({description, type, cover, title, userLavel, totalLavel} : Props) {
+export default function ContentCard({description, type, cover, title, userLavel, totalLavel, taskOptional} : Props) {
   const {isLoading, verifyStep, verificationType, isVerifyState} = useSlideContext()
 
-    if(isVerifyState){
-      return(
-         <div>I'm in verfify mode</div>
-      )
-    }
+  
   return (
     <div className={`w-full bg-gray-800 h-[65vh] my-5 rounded-xl p-4 flex items-center justify-center`}>
+       <h2>my type : {taskOptional === "true" ?  "optional" : "manadatory"}</h2>
         <h1>Your lavel : {userLavel}</h1>
         <h1>total lavel : {totalLavel}</h1>
       <h1 className={`${type === "text" ?  "text-5xl text-center font-semibold leading-snug" : 'hidden' }`}>{description}</h1>
-       {type === "verify"  ?  (
+       {type === "verify"   ?  (
           <div className='flex flex-col items-center justify-center'> 
             <img  src={cover} className='w-32 h-32 rounded-xl' />
             <div className='my-3 flex flex-col items-center justify-center'>

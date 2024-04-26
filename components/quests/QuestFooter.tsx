@@ -56,9 +56,8 @@ export default function QuestFooter({next, prev, join, quest_id, isJoining, isSa
   </div>
 
    <div className='flex space-x-2'>
-   <Button className='border border-pink-500 text-white font-semibold' onClick={handleLinkX}>Link twitter</Button>
-     <Button className='border border-pink-500 text-white font-semibold' onClick={handleLinkD}>Link discord</Button>
-     <Button className='bg-pink-600 text-white font-semibold' onClick={() => join(quest_id, 0, totalQuests -1)} disabled={isJoining || ! quest_id || isSaving} isLoading={isJoining || isSaving}>Begin</Button>
+
+     <Button className='bg-blue-600 text-white font-semibold' onClick={() => join(quest_id, 0, totalQuests -1)} disabled={isJoining || ! quest_id || isSaving} isLoading={isJoining || isSaving}>Begin</Button>
     
 
    </div>

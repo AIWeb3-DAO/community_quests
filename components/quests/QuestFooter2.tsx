@@ -12,11 +12,25 @@ type Props = {
   isUpdatingProgress : any
   slides : any
 }
-export default function QuestFooter2({next, prev, verify, lavel, totalLavels, isUpdatingProgress, slides} : Props) {
-const {selectedSlideIndex, toggleIsVerifyStep} = useSlideContext()
+export default function QuestFooter2({next, prev, verify, lavel, totalLavels, isUpdatingProgress, slides } : Props) {
+const {selectedSlideIndex, toggleIsVerifyStep, isVerified, verifiedIndex} = useSlideContext()
     const supabase = createClient()
       console.log("the slide from footer", slides)
     
+
+        const  getNextBtn = () =>  {
+           if(slides[selectedSlideIndex]?.task_isOptional === "true" || isVerified ){
+            return(
+              <Button className='border border-pink-600 text-white font-semibold' onClick={next} isLoading={isUpdatingProgress} disabled={lavel === slides?.length}>Next</Button>
+            )
+           }else if(slides[selectedSlideIndex]?.task_isOptional !== "true") {
+            return(
+              <Button className='border border-pink-600 text-white font-semibold' onClick={() =>toggleIsVerifyStep("twitter")} isLoading={isUpdatingProgress} >Verify</Button>
+)
+           }else if([selectedSlideIndex]?.task_isOptional === "true" || isVerified){
+            console.log("we zombi")
+           }
+        }
   return (
     <div className='bg-gray-800 fixed bottom-0 w-full h-20 p-3 border-t border-gray-600'>
    <div className='max-w-6xl  mx-auto h-full flex items-center justify-between'>
@@ -31,6 +45,8 @@ const {selectedSlideIndex, toggleIsVerifyStep} = useSlideContext()
                                </div>
                                <p className='text-xs'>10</p>
                                 <p>{selectedSlideIndex}</p>
+                                <p>verified index : {verifiedIndex}</p>
+                                <p>{slides[selectedSlideIndex]?.task_isOptional === "true" ?  "Optional" : "not optional"}</p>
                                
                                </div>
                              </div>
@@ -40,7 +56,7 @@ const {selectedSlideIndex, toggleIsVerifyStep} = useSlideContext()
      
      <Button className='border border-blue-500 text-white font-semibold rounded-xl py-2'  onClick={prev} >Prev</Button>
       {
-        slides[selectedSlideIndex]?.task_isOptional === "true" ?  (
+        slides[selectedSlideIndex]?.task_isOptional === "true" ||  isVerified || verifiedIndex === selectedSlideIndex?  (
           <Button className='border border-pink-600 text-white font-semibold' onClick={next} isLoading={isUpdatingProgress} disabled={lavel === slides?.length}>Next</Button>
 
         ) : (

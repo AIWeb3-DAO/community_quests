@@ -16,6 +16,8 @@ interface SlideContextType {
     isLoading : any
     setIsLoading : any
     toggleIsVerifyStep : any
+    verifiedIndex : any
+    setVerifiedIndex : any
   }
 
   type VerifyProps = {
@@ -32,6 +34,7 @@ interface SlideContextType {
     const [isVerified, setIsVerified] = useState(false)
     const [verificationType, setverificationType] = useState()
     const [isLoading, setIsLoading] = useState(false)
+    const [verifiedIndex, setVerifiedIndex] = useState(0)
   
 
       const handleToggleExpand = (index : any) =>  {
@@ -44,17 +47,58 @@ interface SlideContextType {
           setverificationType(_verificationType)
         }
 
-       const  verifyStep = (type , url) =>  {
-         setIsLoading(true)
-          if(type === "TWITTER"){
-          
-              const twitterRegex = /^https?:\/\/twitter\.com\/\w+\/status\/\d+$/;
-              return twitterRegex.test(url);
-            
-          } else if(type === "DISCORD"){
-            const discordRegex = /^https?:\/\/discord\.com\/channels\/\d+\/\d+\/\d+$/;
+
+          // TWITTER  CHECKER  
+          function isValidTwitterUrl(url) {
+            const twitterRegex = /^https?:\/\/twitter\.com\/\w+\/status\/\d+$/;
+            return twitterRegex.test(url);
+          }
+
+          // DISCORD  CHECKER
+
+          function isValidDiscordUrl(url) {
+            const discordRegex = /^https?:\/\/discord\.com\/channels\/@me\/\d+\/\d+$/;
             return discordRegex.test(url);
           }
+
+       const  verifyStep = (type , url, index) =>  {
+         setIsLoading(true)
+         setTimeout(() => {
+          // Perform validation check here
+          // Replace isValidTwitterUrl and isValidDiscordUrl with your validation functions
+        
+          
+
+            if(type === "TWITTER"){
+              const isValidTwitter = isValidTwitterUrl(url);
+              
+               if(isValidTwitter){
+                setIsVerified(true)
+                setIsVerifyState(false)
+                console.log("validation results", isValidTwitter)
+                setVerifiedIndex(index)
+               }else {
+                setIsVerified(false)
+               }
+              
+            }else if(type === "DISCORD") {
+              const isValidDiscord = isValidDiscordUrl(url);
+            
+              if(isValidDiscord){
+                setIsVerified(true)
+                setIsVerifyState(false)
+                setVerifiedIndex(index)
+                console.log("validation results", isValidDiscord)
+              }else if( ! isValidDiscord){
+                setIsVerified(false)
+              }
+            }else {
+              console.log("no verificaton type")
+            }
+          
+          setIsLoading(false);
+        }, 3000); // 3 seconds delay
+        
        }
     const value: SlideContextType = {
       selectedSlideIndex,
@@ -71,7 +115,9 @@ interface SlideContextType {
       setIsVerified,
       setverificationType,
       toggleIsVerifyStep,
-      verificationType
+      verificationType,
+      verifiedIndex,
+      setVerifiedIndex
 
     };
   

@@ -3,9 +3,20 @@
 import React, {useState, useEffect, useContext, createContext} from 'react'
 import { createClient } from '@/utils/supabase/client'
 
- const ProfileContext = createContext()
 
- 
+interface ProfileProps  {
+   userSession : any
+   user : any
+   userInfo : any
+   isFetchingUser : any  
+   isUserInfoError : any
+   userIdentities : any
+   isFetchingIdentities : any
+}
+// const ProfileContext = createContext(undefined)
+const ProfileContext = createContext<ProfileProps | undefined>(undefined);
+
+ // 
 
   type ProviderProps = {
     children : any
@@ -100,8 +111,12 @@ import { createClient } from '@/utils/supabase/client'
   
  }
 
- const useProfileContext = () => {
-    return useContext(ProfileContext)
+ const useProfileContext = (): ProfileProps => {
+   const context = useContext(ProfileContext);
+   if (!context) {
+      throw new Error('useSlideContext must be used within a SlideProvider');
+    }
+    return context
  }
  export  {ProfileContextProvider, useProfileContext}
 
