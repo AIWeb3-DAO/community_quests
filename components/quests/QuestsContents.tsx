@@ -54,7 +54,7 @@ export default function QuestsContents({slides, selectedSlide, closeModal,userLa
           }, [emblaApi])
 
           const handleUnlockStep = async () =>  {
-           // unlock()
+            unlock()
             scrollNext()
            
            
@@ -82,7 +82,7 @@ export default function QuestsContents({slides, selectedSlide, closeModal,userLa
                   />
                   <div className='flex justify-center'>
     <p>{isVerified ? "VERIFIED" : "NOT VERIFIED"}</p>
-                   <Button className='bg-blue-600 my-4 w-4/6 mx-auto rounded-xl' onClick={() =>    verifyStep("DISCORD", discordTest, selectedSlideIndex)} isLoading={isLoading}>Verify Action</Button>
+                   <Button className='bg-blue-600 my-4 w-4/6 mx-auto rounded-xl' onClick={() =>    verifyStep("DISCORD", verificationUrl, selectedSlideIndex)} isLoading={isLoading} disabled={!verificationUrl}>Verify Action</Button>
                    </div>
                </div>
         

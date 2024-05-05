@@ -24,16 +24,17 @@ const {selectedSlideIndex, toggleIsVerifyStep, isVerified, verifiedIndex} = useS
             return(
               <Button className='border border-pink-600 text-white font-semibold' onClick={next} isLoading={isUpdatingProgress} disabled={lavel === slides?.length}>Next</Button>
             )
-           }else if(slides[selectedSlideIndex]?.task_isOptional !== "true") {
+           }else if(slides[selectedSlideIndex]?.task_isOptional !== "true" && ! isVerified) {
             return(
               <Button className='border border-pink-600 text-white font-semibold' onClick={() =>toggleIsVerifyStep("twitter")} isLoading={isUpdatingProgress} >Verify</Button>
 )
            }else if([selectedSlideIndex]?.task_isOptional === "true" || isVerified){
-            console.log("we zombi")
+            <Button className='border border-pink-600 text-white font-semibold' onClick={next} isLoading={isUpdatingProgress} disabled={lavel === slides?.length}>Next</Button>
+
            }
         }
   return (
-    <div className='bg-gray-800 fixed bottom-0 w-full h-20 p-3 border-t border-gray-600'>
+    <div className='bg-gray-800 fixed bottom-0 w-full h-20 p-3 border-t border-gray-700'>
    <div className='max-w-6xl  mx-auto h-full flex items-center justify-between'>
   <div className='flex items-center gap-3'>
      <h1 className='font-semibold'>Rewards</h1>
@@ -45,9 +46,7 @@ const {selectedSlideIndex, toggleIsVerifyStep, isVerified, verifiedIndex} = useS
                                    <p className='text-sm'>XP</p>
                                </div>
                                <p className='text-xs'>10</p>
-                                <p>{selectedSlideIndex}</p>
-                                <p>verified index : {verifiedIndex}</p>
-                                <p>{slides[selectedSlideIndex]?.task_isOptional === "true" ?  "Optional" : "not optional"}</p>
+                                
                                
                                </div>
                              </div>
@@ -56,7 +55,7 @@ const {selectedSlideIndex, toggleIsVerifyStep, isVerified, verifiedIndex} = useS
    <div className='space-x-5'>
      
      <Button className='border border-blue-500 text-white font-semibold rounded-xl py-2'  onClick={prev} >Prev</Button>
-      {
+      {/*
         slides[selectedSlideIndex]?.task_isOptional === "true" ||  isVerified || verifiedIndex === selectedSlideIndex?  (
           <Button className='border border-pink-600 text-white font-semibold' onClick={next} isLoading={isUpdatingProgress} disabled={lavel === slides?.length}>Next</Button>
 
@@ -64,10 +63,10 @@ const {selectedSlideIndex, toggleIsVerifyStep, isVerified, verifiedIndex} = useS
           <Button className='border border-pink-600 text-white font-semibold' onClick={() =>toggleIsVerifyStep("twitter")} isLoading={isUpdatingProgress} >Verify</Button>
 
         )
-      }
+      */}
 
       
-  
+<Button className='border border-pink-600 text-white font-semibold' onClick={next} isLoading={isUpdatingProgress} disabled={lavel === slides?.length}>{lavel === slides?.length ? "Complete Quest" : "Next"}</Button>
 
 
    </div>

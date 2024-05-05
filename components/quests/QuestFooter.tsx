@@ -39,7 +39,7 @@ export default function QuestFooter({next, prev, join, quest_id, isJoining, isSa
      console.log("the linking error", error)
   }
   return (
-    <div className='bg-gray-800 fixed bottom-0 w-full h-20 p-3 border-t border-gray-600'>
+    <div className='bg-gray-800 fixed bottom-0 w-full h-20 p-3 border-t border-gray-800'>
    <div className='max-w-6xl  mx-auto h-full flex items-center justify-between'>
   <div className='flex items-center gap-3'>
      <h1 className='font-semibold'>Rewards</h1>
@@ -56,8 +56,15 @@ export default function QuestFooter({next, prev, join, quest_id, isJoining, isSa
   </div>
 
    <div className='flex space-x-2'>
+      {
+        user  ?  (
+          <Button className='bg-blue-600 text-white font-semibold' onClick={() => join(quest_id, 0, totalQuests -1)} disabled={isJoining || ! quest_id || isSaving} isLoading={isJoining || isSaving}>Begin</Button>
 
-     <Button className='bg-blue-600 text-white font-semibold' onClick={() => join(quest_id, 0, totalQuests -1)} disabled={isJoining || ! quest_id || isSaving} isLoading={isJoining || isSaving}>Begin</Button>
+        ): (
+          <Button className='bg-blue-600 text-white font-semibold' >Sign in to continue</Button>
+
+        )
+      }
     
 
    </div>

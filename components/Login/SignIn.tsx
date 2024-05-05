@@ -1,4 +1,4 @@
-//@ts-nocheck
+
 import React, {useState, useEffect} from 'react'
 import { FcGoogle } from "react-icons/fc";
 import { FaDiscord } from "react-icons/fa6";
@@ -62,6 +62,8 @@ export default function SignIn() {
             setcurrentStep("USER_STATE_DATA")
           }else if(otpData && ! user) {
             setcurrentStep("OTP_STATE")
+          }else if(! user){
+            setcurrentStep("HOME_STATE")
           }
       }, [user, currentStep, otpData])
       
@@ -152,7 +154,7 @@ enter the code immediately, as it will soon expire.</p>
             )
           }else if(currentStep === "USER_STATE_DATA"){
             return(
-          <ProfileDta  />
+          <ProfileDta  user_id={1} />
             )
           }
       }

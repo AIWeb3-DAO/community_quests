@@ -46,16 +46,14 @@ export default function QuestPage() {
    const {userInfo, user} = useProfileContext()
    const {handleToggleExpand, isShowModal, selectedSlideIndex} = useSlideContext()
    const currentUser = user?.id
-       console.log("whaaaf", user)
+       console.log("user", user)
    const router = usePathname()
 
    //const fullPath = '/quests/2deee952-3410-4071-9659-6cf1036d672e';
    const pathId = router.split('/').pop(); // Splitting the string by '/' and taking the last part
-   console.log("the path id", pathId); // Output: 2deee952-3410-4071-9659-6cf1036d672e
+  
 
-    console.log("the router object", router)
-        
-       const testingQuestId = "e6fefc9e-e500-4e36-b331-fa51b5cae94f"
+    
    
     const supabase = createClient()
 
@@ -113,7 +111,6 @@ if(error) {
 
             const  handleCheckuserStatus = () =>  {
 
-              console.log("i was hooked")
               // I'll write  the s cript here 
               questParticipants?.forEach(row => {
                 // Extract the user ID from the current row
@@ -169,8 +166,7 @@ if(error) {
           setisUpdatingProgress(true);
           let newStep = userLavel[0]?.step + 1;
           //setnowLavel(userLavel[0]?.step + 1)
-          console.log("the next step", newStep);
-          console.log("the user level", userLavel[0]?.step);
+         
        
           
           const { data, error } = await supabase
@@ -353,7 +349,7 @@ const { error } = await supabase
        }, [emblaApi])
 
    
-if(isFetchingQuestContents || isFtchingParticipants || isFetchingUserUserLavel){
+if(isFetchingQuestContents || isFtchingParticipants ){
   return(
     <div className='w-full  flex flex-col items-center justify-center'>
       <QuestPageSkeleton  />

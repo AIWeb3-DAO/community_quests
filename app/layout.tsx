@@ -1,4 +1,4 @@
-'use client'
+
 import { GeistSans } from "geist/font/sans";
 import { useState } from "react";
 import "./globals.css";
@@ -12,11 +12,36 @@ const defaultUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`
   : "http://localhost:3000";
 
-/*export const metadata = {
-  metadataBase: new URL(defaultUrl),
-  title: "Next.js and Supabase Starter Kit",
-  description: "The fastest way to build apps with Next.js and Supabase",
-};*/
+  export const metadata = {
+    title: "Discover polkadot",
+     description : "Discover a wide variety of apps, blockchains, wallets and explorers, built on th Polkadot ecosystem by developers and contributors from across the globe.",
+     canonical : "https://www.canonical.ie/",
+      
+     openGraph: {
+      title: 'Discover Polkadot | Parachains',
+      description: 'Discover a wide variety of apps, blockchains, wallets and explorers, built on th Polkadot ecosystem by developers and contributors from across the globe.',
+      images : [
+        {
+          url: 'https://zfijyshxzcpbcrofuptf.supabase.co/storage/v1/object/public/quests_platform/Discover%20Polkadot.png',
+          width: 800,
+          height: 600,
+          alt: 'Og Image Alt',
+        },
+        {
+          url: 'https://zfijyshxzcpbcrofuptf.supabase.co/storage/v1/object/public/quests_platform/Discover%20Polkadot.png',
+          width: 800,
+          height: 600,
+          alt: 'Og Image Alt',
+        },
+        {
+          url: 'https://zfijyshxzcpbcrofuptf.supabase.co/storage/v1/object/public/quests_platform/Discover%20Polkadot.png',
+          width: 800,
+          height: 600,
+          alt: 'Og Image Alt',
+        },
+      ]
+    }
+  };
 
 export default function RootLayout({
   children,
@@ -24,25 +49,20 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
 
-   const [showWarning, setshowWarning] = useState(true)
+
 
   
   return (
     <html lang="en" className={GeistSans.className}>
       <body className="bg-gray-950 text-gray-300">
-      <ProgressBar
+    {/*}  <ProgressBar
           height="3px"
           color="#3b82f6"
           options={{ showSpinner: false }}
           shallowRouting
-        />
+  />*/}
         <main className="min-h-screen ">
-           {showWarning  &&
-           <div className="w-full sticky top-0 h-6 bg-red-600 animate-pulse max-w-6xl mx-auto px-6 flex items-center justify-between">
-             <p className="text-white text-center ">still in developement things  might break</p>
-              <MdClose  className="text-white w-5 h-5 cursor-pointer" onClick={() => setshowWarning(! showWarning)} />
-           </div>
-}
+     
           <ProfileContextProvider>
         
           <Index   />

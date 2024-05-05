@@ -18,9 +18,7 @@ export default function ContentCard({description, type, cover, title, userLavel,
   
   return (
     <div className={`w-full bg-gray-800 h-[65vh] my-5 rounded-xl p-4 flex items-center justify-center`}>
-       <h2>my type : {taskOptional === "true" ?  "optional" : "manadatory"}</h2>
-        <h1>Your lavel : {userLavel}</h1>
-        <h1>total lavel : {totalLavel}</h1>
+    
       <h1 className={`${type === "text" ?  "text-5xl text-center font-semibold leading-snug" : 'hidden' }`}>{description}</h1>
        {type === "verify"   ?  (
           <div className='flex flex-col items-center justify-center'> 
